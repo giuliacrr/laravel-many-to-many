@@ -21,7 +21,11 @@
                 <h5 class="card-title">{{$project['name']}}</h5>
                 <p><span class="fw-bold">Type:</span> @if($project->type) {{$project->type->name}}@else // @endif</p>
                 <p class="card-text">{{$project['description']}}</p>
-                <a class="card-text">{{$project['url']}}</a>
+                <span class="fw-bold primaryc-text">Tags:</span >
+                  @foreach ($project->technology as $tech)
+                    <span class="badge secondaryc-text p-1 primaryc-bg">{{$tech['name']}}</span>
+                  @endforeach
+                <p><a class="card-text">{{$project['url']}}</a></p>
                 <p class="card-text"><small class="text-body-secondary">{{$project['publication_time']->format("d/m/Y")}}</small></p>
                 <!--Soft Delete-->
                 {{-- <form action="{{ route('admin.projects.destroy', $project->id)}}" method="POST" class="d-inline-block">

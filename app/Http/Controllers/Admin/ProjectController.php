@@ -42,6 +42,7 @@ class ProjectController extends Controller
         $data = $request->validate([
             "name"=>"required|string",
             //<1mb
+            "techs"=>"nullable",
             "image"=>"required|image|mimes:jpeg,png,jpg|max:5120",
             "type_id" => "exists:types,id",
             "url"=>"required|string",
@@ -56,10 +57,11 @@ class ProjectController extends Controller
         //$newProject->save();
         //Con questa stringa, creo tutte e tre le sovrastranti in una
         $newProject = Project::create($data);
+        
         //L'attach ha bisogno dell'id di project e quindi,
         //siccome viene generato solo dopo il create, dobbiamo farlo, appunto, dopo.
-        if(key_exists('techs', $data)){
-            $newProject->techs()->attach($data["techs"]);
+        if($data["techs"]){
+            $newProject->technology()->attach($data["techs"]);
         }
         //Redirect
         return redirect()->route('admin.projects.index');
@@ -96,6 +98,7 @@ class ProjectController extends Controller
 
         $data = $request->validate([
             "name"=>"required|string",
+            "techs"=>"nullable",
             //<1mb
             "image"=>"required|image|mimes:jpeg,png,jpg|max:5120",
             "type_id" => "exists:types,id",
@@ -106,6 +109,8 @@ class ProjectController extends Controller
         
         $data["slug"] = $this->generateSlug($data["name"]);
         $data["image"] = Storage::put("projects", $data["image"]);
+
+        $project->technology()->sync($data["techs"]);
 
         $project->update($data);
         return redirect()->route('admin.projects.index');
@@ -131,6 +136,7 @@ class ProjectController extends Controller
         }else {
             $Projects = Project::where("slug", $slug)->first(); 
              //Soft delete (non permanente -> trash)
+            $Projects->techs()->detach();
             $Projects->delete();
         }
         return redirect()->route('admin.projects.index');
