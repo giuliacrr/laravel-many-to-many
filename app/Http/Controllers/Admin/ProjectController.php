@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +16,7 @@ class ProjectController extends Controller
      * INDEX
      */
     public function index()
-    {
+    {   
         $projects = Project::all();
         return view("admin.projects.index", ["projects"=>$projects]);
     }
@@ -26,14 +27,18 @@ class ProjectController extends Controller
     public function create()
     {   $project = Project::all();
         $types = Type::all();
-        return view("admin.projects.create", ["types" => $types, "project" => $project]);
+        $techs = Technology::all();
+        return view("admin.projects.create", [
+            "types" => $types,
+            "project" => $project,
+            "techs" => $techs
+        ]);
     }
 
     /**
      * STORE
      */
     public function store(Request $request){   
-
         $data = $request->validate([
             "name"=>"required|string",
             //<1mb
@@ -43,7 +48,6 @@ class ProjectController extends Controller
             "description"=>"required|string",
             "publication_time"=>"required|date",
         ]);
-        
         $data["slug"] = $this->generateSlug($data["name"]);
         $data["image"] = Storage::put("projects", $data["image"]);
         //Se il problema è qui, che sia create o singolarmente scritte le seguenti righe, non funziona.
@@ -52,6 +56,12 @@ class ProjectController extends Controller
         //$newProject->save();
         //Con questa stringa, creo tutte e tre le sovrastranti in una
         $newProject = Project::create($data);
+        //L'attach ha bisogno dell'id di project e quindi,
+        //siccome viene generato solo dopo il create, dobbiamo farlo, appunto, dopo.
+        if(key_exists('techs', $data)){
+            $newProject->techs()->attach($data["techs"]);
+        }
+        //Redirect
         return redirect()->route('admin.projects.index');
     }
 
@@ -70,7 +80,12 @@ class ProjectController extends Controller
     {
         $project = Project::where("slug", $slug)->first();
         $types = Type::all();
-        return view('admin.projects.edit', ["project"=> $project, "types" => $types]);
+        $techs = Technology::all();
+        return view('admin.projects.edit', [
+            "project"=> $project,
+            "types" => $types,
+            "techs" => $techs,
+        ]);
     }
 
     /**

@@ -2,7 +2,7 @@
 @section("title", "Laravel - Add a Project")
 @section('content')
 <div class="container mt-5">
-  <h2>Add a project!</h2>
+  <h2 class="secondaryc-text text-center">Add a project!</h2>
   <form class="mt-5 transp-bg p-3 rounded" action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
     @csrf()
 
@@ -35,6 +35,18 @@
         <div class="invalid_feedback">{{ $message }}.</div>
         @enderror
     </div>
+    <!--Project Tech-->
+    <div class="mb-3">
+      <label class="form-label fw-bold secondaryc-text">Tags</label>
+      <div>
+        @foreach ($techs as $tech)
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" name="techs[]" id="{{$tech->name}}" value="{{$tech->id}}">
+          <label class="form-check-label secondaryc-text" for="{{$tech->name}}">{{$tech->name}}</label>
+        </div>
+        @endforeach
+      </div>
+    </div>
     <!--Project image-->
     <div class="mb-3">
       <label class="form-label secondaryc-text fw-bold">Image:</label>
@@ -53,16 +65,18 @@
     </div>
     <!--Project publication date-->
     <div class="mb-3">
-      <label class="form-label fw-bold secondaryc-text">Creation Date:</label>
-      <input type="text" class="form-control @error('date') is-invalid @enderror" name="publication_time">
-      @error('date')
+      <div class="date-row">
+        <label for="inputDate" class="form-label fw-bold secondaryc-text">Publication:</label>
+        <input type="date" class="form-control @error('date') is-invalid @enderror" id="inputDate" name="publication_time">
+        @error('date')
             <div class="invalid_feedback">{{ $message }}</div>
         @enderror
+      </div>
     </div>
 
     <div class="text-center">
-      <a class="btn thirdc-btn text-white" href="{{ route("admin.projects.index") }}">Cancel</a>
-      <button class="btn btn-danger ms-2">Save</button>
+      <a class="btn primaryc-btn text-white" href="{{ route("admin.projects.index") }}">Cancel</a>
+      <button class="btn secondaryc-btn text-white ms-2">Save</button>
     </div>
   </form>
 </div>

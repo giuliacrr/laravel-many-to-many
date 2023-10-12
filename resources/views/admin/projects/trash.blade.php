@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-  <div class="text-danger text-center mt-5">
+  <div class="secondaryc-text text-center mt-5">
     <h2>Deleted Projects</h2>
   </div>
 

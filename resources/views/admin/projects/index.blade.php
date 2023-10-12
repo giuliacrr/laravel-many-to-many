@@ -16,6 +16,10 @@
               <div class="card-body">
                 <h4 class="card-title primaryc-text fw-bold">{{$repo['name']}}</h4>
                 <p class="text-white"><span class="fw-bold primaryc-text">Type:</span > @if($repo->type) {{$repo->type->name}}@else Out of topic @endif</p>
+                <span class="fw-bold primaryc-text">Tags:</span >
+                @foreach ($repo->techs as $tech)
+                  <span class="text-white"> {{$tech->name}}</span>
+                @endforeach
                 <p class="card-text mt-5"><small class="text-body-secondary">{{$repo['publication_time']->format("d/m/Y")}}</small></p>
                 <div class="d-flex align-items-center">
                   <!--Show + delete + edit -->
@@ -39,6 +43,7 @@
           <button class="add-btn fw-bold text-white btn secondaryc-btn" type="button">
             <i class="fa-solid fa-plus"></i>
           </button></a>
+          <p class="secondaryc-text">Add a project</p>
         </div> 
       </div>
     </div>

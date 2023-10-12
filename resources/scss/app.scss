@@ -24,6 +24,9 @@ body {
 .primaryc-text {
     color: #132e4e;
 }
+.primaryc-bg {
+    background-color: #132e4e;
+}
 
 //Secondary color
 .secondaryc-btn {
@@ -34,6 +37,12 @@ body {
 }
 .secondaryc-text {
     color: #ff9143;
+}
+.secondaryc-link {
+    color: #ff9143;
+}
+.secondaryc-link:hover {
+    color: #fcb583 !important;
 }
 
 //Third color
