@@ -1,0 +1,66 @@
+@use "bootstrap";
+@use "@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+    background-image: url(https://preview.redd.it/y1jqr8m0fv531.jpg?width=2580&format=pjpg&auto=webp&s=2f377181d98a5629682394e29c687679a49bfef1);
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+.repo-img {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    width: 100%;
+}
+//Primary color
+.primaryc-btn {
+    background-color: #132e4e;
+}
+.primaryc-btn:hover {
+    background-color: #265791;
+}
+.primaryc-text {
+    color: #132e4e;
+}
+
+//Secondary color
+.secondaryc-btn {
+    background-color: #f5893b;
+}
+.secondaryc-btn:hover {
+    background-color: #fcb583;
+}
+.secondaryc-text {
+    color: #ff9143;
+}
+
+//Third color
+.thirdc-btn {
+    background-color: #8e5852;
+}
+.thirdc-btn:hover {
+    background-color: #c47c74;
+}
+.thirdc-text {
+    color: #8e5852;
+}
+
+.add-btn {
+    border-radius: 50%;
+    padding: 15px 20px;
+}
+
+.date-row {
+    max-width: 300px;
+}
+
+//INDEX CARDS
+.card-index {
+    border: none;
+}
+
+.transp-bg {
+    background-color: rgba($color: #fff, $alpha: 0.4) !important;
+}
