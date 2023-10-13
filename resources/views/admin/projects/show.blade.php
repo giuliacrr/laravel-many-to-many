@@ -14,7 +14,7 @@
         <div class="card mb-3">
           <div class="row g-0">
             <div class="col-md-4">
-              <img src="{{asset('storage/' . $project->image)}}" class="img-fluid rounded-start" alt="...">
+              <img src="{{asset('storage/' . $project->image)}}" class="img-fluid rounded-start repo-img" alt="...">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -22,7 +22,7 @@
                 <p><span class="fw-bold">Type:</span> @if($project->type) {{$project->type->name}}@else // @endif</p>
                 <p class="card-text">{{$project['description']}}</p>
                 <span class="fw-bold primaryc-text">Tags:</span >
-                  @foreach ($project->technology as $tech)
+                  @foreach ($project->technologies as $tech)
                     <span class="badge secondaryc-text p-1 primaryc-bg">{{$tech['name']}}</span>
                   @endforeach
                 <p><a class="card-text">{{$project['url']}}</a></p>
@@ -38,11 +38,11 @@
                   </a>
                 </form> --}}
                 <div class="d-flex">
-                  <a href="{{ route('admin.projects.edit', $project->slug) }}" class="btn btn-warning me-2">Edit</a>
+                  <a href="{{ route('admin.projects.edit', $project->slug) }}" class="btn secondaryc-btn text-white me-2">Edit</a>
                   <form action="{{ route('admin.projects.destroy', $project->slug) }}" method="POST">
                     @csrf
                     @method("DELETE")
-                    <button type="submit" class="btn btn-danger">Elimina</button>
+                    <button type="submit" class="btn text-white thirdc-btn">Elimina</button>
                   </form>
                 </div>
 

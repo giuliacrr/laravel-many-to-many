@@ -30,7 +30,8 @@ class Project extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function technology(){
+    //LE richiamo sempre senza () 
+    public function technologies(){
         return $this->belongsToMany(Technology::class);
     }
 }

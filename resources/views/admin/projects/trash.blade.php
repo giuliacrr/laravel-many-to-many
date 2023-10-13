@@ -9,14 +9,15 @@
 
   <div>
     <div class="d-flex flex-wrap custom-style">
-      @foreach($Projects as $repo)
+      @foreach($projects as $repo)
       <div class="cardz-box position-relative mb-3 {{ request()->input("id") == $repo->slug ? 'border-success' : '' }}">
         <!--immagine-->
         <div>
-          <img class="img-cardz" src="{{asset('storage/' . $repo->image)}}" alt="repoimg" />
+          <img class="img-fluid rounded-start repo-img" style="width:300px" src="{{asset('storage/' . $repo->image)}}" alt="repoimg" />
         </div>
         <!--titolo-->
         <div>
+          <!--Perchè mi da problema con il forceDelete riga 135 di  ProjectController?-->
           <div class="position-absolute hoverme justify-content-center align-items-center">
             <form action="{{ route('admin.projects.destroy', ["slug" => $repo->slug, "force" => true]) }}" method="POST" class="d-inline-block">
               @csrf

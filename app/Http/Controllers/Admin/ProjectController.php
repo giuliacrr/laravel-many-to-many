@@ -61,7 +61,7 @@ class ProjectController extends Controller
         //L'attach ha bisogno dell'id di project e quindi,
         //siccome viene generato solo dopo il create, dobbiamo farlo, appunto, dopo.
         if($data["techs"]){
-            $newProject->technology()->attach($data["techs"]);
+            $newProject->technologies()->attach($data["techs"]);
         }
         //Redirect
         return redirect()->route('admin.projects.index');
@@ -110,7 +110,7 @@ class ProjectController extends Controller
         $data["slug"] = $this->generateSlug($data["name"]);
         $data["image"] = Storage::put("projects", $data["image"]);
 
-        $project->technology()->sync($data["techs"]);
+        $project->technologies()->sync($data["techs"]);
 
         $project->update($data);
         return redirect()->route('admin.projects.index');
@@ -121,8 +121,8 @@ class ProjectController extends Controller
      * TRASH
      */
     public function trash() {
-        $Projects = Project::onlyTrashed()->get();
-        return view("admin.projects.trash", ["Projects" => $Projects]);
+        $projects = Project::onlyTrashed()->get();
+        return view("admin.projects.trash", ["projects" => $projects]);
     }
 
     /**
@@ -130,16 +130,17 @@ class ProjectController extends Controller
      */
     public function destroy(Request $request, $slug){
         if ($request->input("force")) {
-            $Projects = Project::onlyTrashed()->where("slug", $slug)->first();
+            $projects = Project::onlyTrashed()->where("slug", $slug)->first();
+            $projects->technologies()->detach();
              //Force delete (permanente)
-            $Projects->forceDelete();
+            $projects->forceDelete();
         }else {
-            $Projects = Project::where("slug", $slug)->first(); 
+            $projects = Project::where("slug", $slug)->first(); 
              //Soft delete (non permanente -> trash)
-            $Projects->techs()->detach();
-            $Projects->delete();
+            $projects->technologies()->detach();
+            $projects->delete();
         }
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.trash');
     }
     
 
@@ -147,17 +148,13 @@ class ProjectController extends Controller
     protected function generateSlug($name) {
         // contatore da usare per avere un numero incrementale
         $counter = 0;
-
         do {
             // creo uno slug e se il counter è maggiore di 0, concateno il counter
             $slug = Str::slug($name) . ($counter > 0 ? "-" . $counter : "");
-
             // cerco se esiste già un elemento con questo slug
             $alreadyExists = Project::where("slug", $slug)->first();
-
             $counter++;
         } while ($alreadyExists); // finché esiste già un elemento con questo slug, ripeto il ciclo per creare uno slug nuovo
-
         return $slug;
     }
 }
